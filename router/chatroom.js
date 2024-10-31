@@ -6,13 +6,12 @@ const db = require("../models");
 const { ChatRoom } = db;
 const { User } = db;
 const { ChatMessage } = db;
-const { MessageRead } = db;
 
 router.get("/", async (req, res) => {
   try {
     const token = req.headers["authorization"];
     const tokenValue = token ? token.split(" ")[1] : null;
-    
+
     if (!tokenValue) {
       return res.status(400).json({ success: false, message: "토큰이 제공되지 않았습니다." });
     } else {
@@ -26,28 +25,29 @@ router.get("/", async (req, res) => {
         // 각 채팅방에 대한 정보를 가져옵니다.
         const chatRooms = await Promise.all(chatrooms.map(async (chatroom) => {
           const lastChatMessage = await ChatMessage.findOne({
-            where: { idChatRoom: chatroom.id},
+            where: { idChatRoom: chatroom.id },
             order: [['createdAt', 'DESC']], // 최신 메시지를 가져오기 위해 정렬
             limit: 1 // 가장 최신 메시지 하나만 가져옵니다.
           });
 
-          const Messages = await ChatMessage.findAll({
-            where: { 
-              idChatRoom: chatroom.id,
-              idUser: { [Op.ne]: user.id } // 자신이 보낸 메시지는 제외
-            }
-          });
-
-          // 해당 유저가 읽지 않은 메시지 수를 가져옵니다.
-          const noReads = await MessageRead.count({
+          // 해당 채팅방에서 읽지 않은 메시지 수를 가져옵니다.
+          const yourMessages = await ChatMessage.findAll({
             where: {
-              idUser: user.id,
-              isRead: false // 읽지 않은 메시지 수
+              idChatRoom: chatroom.id, // 해당 채팅방
+              idUser: { [Op.ne]: user.id }, // 자신이 보낸 메시지는 제외 -> 상대방이 보낸 메시지만 가져옵니다.
             }
           });
 
+          yourMessages.forEach(async (message) => {
+            const isRead = await MessageRead.findOne({
+              where: {
+                idChatMessage: message.id,
+                idUser: user.id
+              }
+            });
+          });
 
-          mento = await User.findOne({ where: { id: chatroom.mentoId } });
+          const mento = await User.findOne({ where: { id: chatroom.mentoId } });
 
           return {
             idChatRoom: chatroom.id,
