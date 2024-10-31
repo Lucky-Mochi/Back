@@ -83,3 +83,14 @@ Content-Type: application/json
 {
   "mentoringId": 2
 }
+
+# POST 요청: 멘토 평가하기
+###
+POST http://localhost:4000/profile/review
+authorization: Bearer ya29.a0AeDClZDeYA0GdRdFpzFvc5FpxHoLkIyfGAhkmkAyVd7DN2q8bRD5aHtyFRLS9WATgfvyGWGBj2qnbsY9iQUsrRYKTZ4nuh51xuqnuq6qTDcOlnfazZ-DdpgAqskVDRJ9CuN4AG31biOBsQymux1p1v0IU1ddrdUthXbyCgfwaCgYKAdISARASFQHGX2MimxayHRYtKHP8NWi0vq1OlA0175
+Content-Type: application/json
+
+{
+  "mentoId": 1,
+  "temperature": 3
+}
