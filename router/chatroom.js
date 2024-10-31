@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const { Op } = require('sequelize');
 const db = require("../models");
 
 const { ChatRoom } = db;
@@ -31,20 +31,12 @@ router.get("/", async (req, res) => {
           });
 
           // 해당 채팅방에서 읽지 않은 메시지 수를 가져옵니다.
-          const yourMessages = await ChatMessage.findAll({
+          const noReads = await ChatMessage.count({
             where: {
               idChatRoom: chatroom.id, // 해당 채팅방
               idUser: { [Op.ne]: user.id }, // 자신이 보낸 메시지는 제외 -> 상대방이 보낸 메시지만 가져옵니다.
+              isRead: false // 읽지 않은 메시지만 가져옵니다.
             }
-          });
-
-          yourMessages.forEach(async (message) => {
-            const isRead = await MessageRead.findOne({
-              where: {
-                idChatMessage: message.id,
-                idUser: user.id
-              }
-            });
           });
 
           const mento = await User.findOne({ where: { id: chatroom.mentoId } });
