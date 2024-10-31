@@ -1,0 +1,62 @@
+# POST 요청: 장기보험 계약일 범위로 조회
+### 
+POST http://localhost:4000/long/date-range
+Content-Type: application/json
+
+{
+  "startDate": "2024-08-01",
+  "endDate": "2024-08-31",
+  "dateType": "paymentEndDate",
+  "contractStatus": "statusAll"
+
+}
+
+# POST 요청: 일반보험 계약일 범위로 조회
+### 
+POST http://localhost:4000/normal/date-range
+Content-Type: application/json
+
+{
+  "startDate": "2024-08-01",
+  "endDate": "2024-08-31",
+  "dateType": "contractDate",
+  "contractStatus": "statusAll"
+
+}
+
+# GET 요청: 사용자관리 - 지점별 - 기본
+###
+GET http://localhost:4000/user/branch
+
+# GET 요청: 사용자관리 - 팀별 - 지점별 클릭시
+###
+GET http://localhost:4000/user/team?branch=지점영업8부
+Content-Type: application/json
+
+# GET 요청: 사용자관리 - 이름별 - 팀별 클릭시
+###
+GET http://localhost:4000/user/name?branch=지점영업8부&team=1팀
+Content-Type: application/json
+
+
+# GET 요청: 사용자관리 - 업무담당자별 - 기본
+###
+GET http://localhost:4000/user/manager
+
+# POST 요청: 사용자관리 - 이름으로 상세 조회
+###
+POST  http://localhost:4000/user/detail
+Content-Type: application/json
+
+{
+  "userName": "i1001"
+}
+
+# POST 요청: 자료실
+###
+POST http://localhost:4000/dataroom
+Content-Type: application/json
+
+{
+  "writerName": "인스빌"
+}

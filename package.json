@@ -1,16 +1,26 @@
 {
   "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mysql2": "^3.11.3",
-    "sequelize": "^6.37.4"
+    "sequelize": "^6.37.4",
+    "sequelize-cli": "^6.6.2"
   },
   "name": "back2",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate:dev": "NODE_ENV=development npx sequelize-cli db:migrate",
+    "migrate:test": "NODE_ENV=test npx sequelize-cli db:migrate",
+    "migrate:prod": "NODE_ENV=production npx sequelize-cli db:migrate",
+    "rollback:dev": "NODE_ENV=development npx sequelize-cli db:migrate:undo",
+    "rollback:test": "NODE_ENV=test npx sequelize-cli db:migrate:undo",
+    "rollback:prod": "NODE_ENV=production npx sequelize-cli db:migrate:undo"
   },
   "author": "",
   "license": "ISC"
