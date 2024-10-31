@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'menteeId', // 멘티 외래 키
         as: 'menteeRooms' // association 이름
       });
-      User.hasMany(models.MessageRead, {
-        foreignKey: 'idUser', // 외래 키
-        as: 'reads' // association 이름
-      });
     }
   }
   User.init({

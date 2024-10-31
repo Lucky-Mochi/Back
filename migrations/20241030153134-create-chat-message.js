@@ -30,6 +30,10 @@ module.exports = {
         onUpdate: 'CASCADE', // ChatRoom이 업데이트될 때 ChatMessage도 업데이트
         onDelete: 'CASCADE' // ChatRoom이 삭제될 때 ChatMessage도 삭제
       },
+      isRead: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

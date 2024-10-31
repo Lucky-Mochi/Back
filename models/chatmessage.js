@@ -14,16 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'idChatRoom', // 외래 키
         as: 'chatRoom' // association 이름
       });
-      ChatMessage.hasMany(models.MessageRead, {
-        foreignKey: 'idChatMessage', // 외래 키
-        as: 'reads' // 읽음 상태 association 이름
-      });
     }
   }
   ChatMessage.init({
     messageContent: DataTypes.STRING,
     idUser: DataTypes.INTEGER,
     idChatRoom: DataTypes.INTEGER,
+    isRead: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'ChatMessage',
