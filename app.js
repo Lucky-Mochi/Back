@@ -15,9 +15,11 @@ app.get('/', (req, res) => {
 
 const authRouter = require('./router/auth');
 const chatroomRouter = require('./router/chatroom');
+const findMentoRouter = require('./router/find-mento');
 
 app.use('/auth', authRouter);
 app.use('/chatrooms', chatroomRouter);
+app.use('/find-mento', findMentoRouter);
 
 
 app.listen(port, () => {

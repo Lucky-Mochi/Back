@@ -49,3 +49,7 @@ Content-Type: application/json
   "chatRoomId": 2
 }
 
+# GET 요청: 멘토링 찾기
+###
+GET http://localhost:4000/find-mento
+
