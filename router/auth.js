@@ -1,4 +1,5 @@
 const express = require("express");
+require('dotenv').config(); // dotenv 패키지를 사용해 .env 파일 로드
 const axios = require('axios');
 const router = express.Router();
 const db = require("../models");
@@ -7,11 +8,14 @@ const { User } = db;
 
 const GOOGLE_CLIENT_ID = '1039522151820-tpvlul7g4k31equ0becd2qj0t7mpa4nj.apps.googleusercontent.com';
 const GOOGLE_CLIENT_SECRET = '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';
-const GOOGLE_REDIRECT_URI = 'http://localhost:4000/auth/login/redirect';
+const GOOGLE_REDIRECT_URI = `http://${process.env.API_URL}/auth/login/redirect`;
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
 
 router.get("/login", async (req, res) => {
+
+  console.log('✅',GOOGLE_REDIRECT_URI)
+
   let url = 'https://accounts.google.com/o/oauth2/v2/auth';
   url += `?client_id=${GOOGLE_CLIENT_ID}`
   url += `&redirect_uri=${GOOGLE_REDIRECT_URI}`
