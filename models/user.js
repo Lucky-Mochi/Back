@@ -36,7 +36,9 @@ module.exports = (sequelize, DataTypes) => {
     googleId: DataTypes.STRING,
     subjectTag: DataTypes.STRING,
     etcTag: DataTypes.STRING,
-    temperature: DataTypes.INTEGER
+    temperature: DataTypes.INTEGER,
+    accessToken: DataTypes.STRING,
+    profileImg: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User',

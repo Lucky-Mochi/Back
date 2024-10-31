@@ -45,6 +45,12 @@ module.exports = {
       temperature: {
         type: Sequelize.INTEGER
       },
+      accessToken: {
+        type: Sequelize.STRING
+      },
+      profileImg: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
