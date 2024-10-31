@@ -86,4 +86,54 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.put("/", async (req, res) => {
+  try {
+    const token = req.headers["authorization"];
+    const tokenValue = token ? token.split(" ")[1] : null;
+
+    // 토큰이 없거나 유효하지 않은 경우 처리
+    if (!tokenValue) {
+      return res.status(400).json({ success: false, message: "토큰이 제공되지 않았습니다." });
+    }
+
+    const user = await User.findOne({ where: { accessToken: tokenValue } });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "유효하지 않은 토큰입니다." });
+    }
+
+    const {
+      nickName,
+      age,
+      mentoType,
+      subjectTag,
+      etcTag,
+      myInfo
+    } = req.body;
+
+    // 필수 입력 값 확인
+    if (!nickName || !age || !mentoType || !subjectTag || !etcTag || !myInfo) {
+      return res.status(400).json({ success: false, message: "필수 입력 값이 없습니다." });
+    }
+
+    // 사용자 정보 업데이트
+    await User.update({
+      nickName,
+      age,
+      mentoType,
+      subjectTag,
+      etcTag,
+      myInfo
+    }, {
+      where: { id: user.id }
+    });
+
+    return res.status(200).json({ success: true, message: "프로필이 업데이트되었습니다." });
+
+  } catch (error) {
+    console.error("프로필 업데이트 에러:", error);
+    res.status(500).json({ success: false, message: "서버 에러가 발생했습니다." });
+  }
+});
+
 module.exports = router;

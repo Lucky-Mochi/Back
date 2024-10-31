@@ -58,3 +58,18 @@ GET http://localhost:4000/find-mento
 GET http://localhost:4000/profile
 authorization: Bearer ya29.a0AeDClZDeYA0GdRdFpzFvc5FpxHoLkIyfGAhkmkAyVd7DN2q8bRD5aHtyFRLS9WATgfvyGWGBj2qnbsY9iQUsrRYKTZ4nuh51xuqnuq6qTDcOlnfazZ-DdpgAqskVDRJ9CuN4AG31biOBsQymux1p1v0IU1ddrdUthXbyCgfwaCgYKAdISARASFQHGX2MimxayHRYtKHP8NWi0vq1OlA0175
 Content-Type: application/json
+
+# PUT 요청: 프로필 정보 수정
+###
+PUT http://localhost:4000/profile
+authorization: Bearer ya29.a0AeDClZDeYA0GdRdFpzFvc5FpxHoLkIyfGAhkmkAyVd7DN2q8bRD5aHtyFRLS9WATgfvyGWGBj2qnbsY9iQUsrRYKTZ4nuh51xuqnuq6qTDcOlnfazZ-DdpgAqskVDRJ9CuN4AG31biOBsQymux1p1v0IU1ddrdUthXbyCgfwaCgYKAdISARASFQHGX2MimxayHRYtKHP8NWi0vq1OlA0175
+Content-Type: application/json
+
+{
+  "nickName": "이헌도",
+  "age": 26,
+  "mentoType": "문화",
+  "subjectTag": "JavaScript",
+  "etcTag": "Express",
+  "myInfo": "I love coding and mentoring👍"
+}
