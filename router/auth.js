@@ -54,7 +54,7 @@ router.get("/login/redirect", async (req, res) => {
       code,
       client_id: GOOGLE_CLIENT_ID,
       client_secret: GOOGLE_CLIENT_SECRET,
-      redirect_uri: `http://3.80.140.247.nip.io/auth/login/redirect`,
+      redirect_uri: GOOGLE_REDIRECT_URI,
       grant_type: 'authorization_code',
     });
   
