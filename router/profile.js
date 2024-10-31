@@ -256,4 +256,32 @@ router.get('/logout', async (req, res) => {
   }
 });
 
+router.delete("/quit", async (req, res) => {
+  try {
+    const token = req.headers["authorization"];
+    const tokenValue = token ? token.split(" ")[1] : null;
+
+    // 토큰이 없거나 유효하지 않은 경우 처리
+    if (!tokenValue) {
+      return res.status(400).json({ success: false, message: "토큰이 제공되지 않았습니다." });
+    }
+
+    const user = await User.findOne({ where: { accessToken: tokenValue } });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "유효하지 않은 토큰입니다." });
+    }
+
+    await User.destroy({
+      where: { id: user.id }
+    });
+
+    return res.status(200).json({ success: true, message: "계정이 삭제되었습니다." });
+
+  } catch (error) {
+    console.error("계정 삭제 에러:", error);
+    res.status(500).json({ success: false, message: "서버 에러가 발생했습니다." });
+  }
+});
+
 module.exports = router;
