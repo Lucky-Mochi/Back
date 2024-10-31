@@ -10,7 +10,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       matchStatus: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'unapplied', // applied(신청중) | accepted(수락됨) | declined(거절됨) | unapplied(아직신청x)
       },
       mentoId: {
         type: Sequelize.INTEGER,
@@ -32,11 +33,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('Now'),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('Now'),
       }
     });
   },

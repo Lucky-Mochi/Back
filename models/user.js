@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     subjectTag: DataTypes.STRING,
     etcTag: DataTypes.STRING,
     temperature: DataTypes.INTEGER,
-    accessToken: DataTypes.STRING,
+    accessToken: DataTypes.TEXT,
     profileImg: DataTypes.STRING,
   }, {
     sequelize,

@@ -46,18 +46,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       accessToken: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       profileImg: {
         type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('Now'),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('Now'),
       }
     });
   },
