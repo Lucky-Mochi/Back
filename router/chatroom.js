@@ -119,4 +119,53 @@ router.get("/my-mentorings", async (req, res) => {
   }
 });
 
+router.post("/chat-messages", async (req, res) => {
+  try {
+    const token = req.headers["authorization"];
+    const tokenValue = token ? token.split(" ")[1] : null;
+
+    if (!tokenValue) {
+      return res.status(400).json({ success: false, message: "토큰이 제공되지 않았습니다." });
+    }
+
+    const user = await User.findOne({ where: { accessToken: tokenValue } });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "유효하지 않은 토큰입니다." });
+    }
+
+    const { chatRoomId } = req.body;
+
+    // 채팅방 정보 가져오기
+    const chatRoom = await ChatRoom.findOne({ where: { id: chatRoomId } });
+    if (!chatRoom) {
+      return res.status(404).json({ success: false, message: "존재하지 않는 채팅방입니다." });
+    }
+
+    // 채팅 메시지 목록 가져오기
+    const chatMessages = await ChatMessage.findAll({
+      where: { idChatRoom: chatRoomId },
+      attributes: ['id', 'idUser', 'messageContent', 'createdAt'],
+      order: [['createdAt', 'ASC']]
+    });
+
+    // 각 메시지 정보를 필요한 형태로 변환
+    const messages = chatMessages.map((message) => ({
+      writerId: message.idUser,
+      messageContent: message.messageContent,
+      created_at: message.createdAt
+    }));
+
+    // 최종 응답 생성
+    return res.status(200).json({
+      matchStatus: chatRoom.matchStatus,
+      chatMessages: messages
+    });
+
+  } catch (error) {
+    console.error("채팅 메시지 불러오기 에러:", error);
+    res.status(500).json({ success: false, message: "서버 에러가 발생했습니다." });
+  }
+});
+
+
 module.exports = router;
