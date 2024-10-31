@@ -9,16 +9,12 @@ module.exports = {
       {
         matchStatus: 'unapplied', // applied(신청중) | accepted(수락됨) | declined(거절됨) | unapplied(아직신청x)
         mentoId: 1, // LuckyMochi의 ID
-        menteedId: 2, // 이헌도2의 ID
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        menteeId: 2, // 이헌도2의 ID
       },
       {
         matchStatus: 'unapplied', // applied(신청중) | accepted(수락됨) | declined(거절됨) | unapplied(아직신청x)
         mentoId: 2, // 이헌도2의 ID
-        menteedId: 1, // LuckyMochi의 ID
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        menteeId: 1, // LuckyMochi의 ID
       },
     ], {});
   },

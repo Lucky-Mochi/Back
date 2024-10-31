@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'mentor' // 멘토 association 이름
       });
       ChatRoom.belongsTo(models.User, {
-        foreignKey: 'menteedId', // 멘티 외래 키
+        foreignKey: 'menteeId', // 멘티 외래 키
         as: 'mentee' // 멘티 association 이름
       });
       ChatRoom.hasMany(models.ChatMessage, {
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   ChatRoom.init({
     matchStatus: DataTypes.STRING,
     mentoId: DataTypes.INTEGER,
-    menteedId: DataTypes.INTEGER
+    menteeId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ChatRoom',

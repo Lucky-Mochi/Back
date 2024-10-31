@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     messageContent: DataTypes.STRING,
     idUser: DataTypes.INTEGER,
     idChatRoom: DataTypes.INTEGER,
-    created_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'ChatMessage',

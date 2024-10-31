@@ -17,7 +17,7 @@ const authRouter = require('./router/auth');
 const chatroomRouter = require('./router/chatroom');
 
 app.use('/auth', authRouter);
-app.use('/chatroom', chatroomRouter);
+app.use('/chatrooms', chatroomRouter);
 
 
 app.listen(port, () => {

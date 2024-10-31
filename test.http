@@ -19,4 +19,7 @@ Content-Type: application/json
 
 # GET 요청: 사용자관리 - 지점별 - 기본
 ###
-GET http://localhost:4000/user/branch
+GET http://localhost:4000/chatrooms
+authorization: Bearer ya29.a0AeDClZBicEoZ4hgQ73z32R5HJNJx7wdb5okiNJrX5kCvKEd6HpbeB7-RVNOqpEPY1OA0I-d_rWJ4v9DQThlJ6UHn_iEmbIxefRZzAO06EdqUozVsMrx3V68S4KL4QJlHMVuwDQYeth7JD6xPhs7uRgra4SGV3dWQwp1xdyOkaCgYKATUSARESFQHGX2Mi0j8RZs54Emy9T8re4YXopw0175
+Content-Type: application/json
+

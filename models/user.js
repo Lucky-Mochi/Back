@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'mentorRooms' // association 이름
       });
       User.hasMany(models.ChatRoom, {
-        foreignKey: 'menteedId', // 멘티 외래 키
+        foreignKey: 'menteeId', // 멘티 외래 키
         as: 'menteeRooms' // association 이름
       });
       User.hasMany(models.MessageRead, {
