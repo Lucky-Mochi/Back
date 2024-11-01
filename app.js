@@ -3,7 +3,10 @@ const cors = require("cors");
 const app = express();
 const port = 4000;
 
-app.use(cors()); // CORS 미들웨어 추가
+app.use((req, res) => {
+    res.header("Access-Control-Allow-Origin", "*"); // 모든 도메인 허용
+});
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
