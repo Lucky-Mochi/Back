@@ -16,6 +16,16 @@ module.exports = {
         mentoId: 2, // 이헌도2의 ID
         menteeId: 1, // LuckyMochi의 ID
       },
+      {
+        matchStatus: 'applied', // applied(신청중) | accepted(수락됨) | declined(거절됨) | unapplied(아직신청x)
+        mentoId: 1, // 이헌도2의 ID
+        menteeId: 2, // LuckyMochi의 ID
+      },
+      {
+        matchStatus: 'accepted', // applied(신청중) | accepted(수락됨) | declined(거절됨) | unapplied(아직신청x)
+        mentoId: 2, // 이헌도2의 ID
+        menteeId: 1, // LuckyMochi의 ID
+      },
     ], {});
   },
 
