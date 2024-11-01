@@ -167,9 +167,10 @@ router.post("/chat-messages", async (req, res) => {
     // 각 메시지 정보를 필요한 형태로 변환
     const messages = chatMessages.map((message) => ({
       writerId: message.idUser,
+      me: user.id === message.idUser ? true : false, // 삼항 연산자를 올바르게 사용
       messageContent: message.messageContent,
       created_at: message.createdAt
-    }));
+    }));    
 
     // 최종 응답 생성
     return res.status(200).json({
