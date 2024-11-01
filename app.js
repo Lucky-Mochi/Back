@@ -11,9 +11,7 @@ const { ChatRoom } = db;
 const { User } = db;
 const { ChatMessage } = db;
 
-// app.use((req, res) => {
-//     res.header("Access-Control-Allow-Origin", "*"); // 모든 도메인 허용
-// });
+app.use(cors({ origin: '*', methods: ['GET', 'POST'] }));
 
 app.use(express.json());
 
