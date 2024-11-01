@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require("cors");
-const http = require('http'); // Socket.IO와 연결할 HTTP 서버
-const { Server } = require('socket.io'); // Socket.IO 가져오기
+const http = require("http");
+const socketIo = require("socket.io");
+
 const app = express();
 const port = 4000;
 
@@ -12,14 +13,58 @@ const { User } = db;
 const { ChatMessage } = db;
 
 app.use(cors({ origin: '*', methods: ['GET', 'POST'] }));
-
 app.use(express.json());
 
 app.get('/', (req, res) => {
-	res.send(`
-    <h1>Log in</h1>
-        <a href="/auth/login">Log in</a>
-    `);
+  res.send(`
+  <h1>채팅방 테스트</h1>
+  <div>
+      <label for="chatRoomId">채팅방 ID:</label>
+      <input type="text" id="chatRoomId" placeholder="채팅방 ID를 입력하세요" />
+  </div>
+  <div>
+      <label for="userId">사용자 ID:</label>
+      <input type="text" id="userId" placeholder="사용자 ID를 입력하세요" />
+  </div>
+  <button onclick="joinRoom()">채팅방 참여</button>
+
+  <div>
+      <label for="message">메시지:</label>
+      <input type="text" id="message" placeholder="메시지를 입력하세요" />
+      <button onclick="sendChat()">메시지 전송</button>
+  </div>
+
+  <div id="chatLog" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll;">
+      <h2>채팅 로그</h2>
+  </div>
+
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <script>
+      const socket = io("http://localhost:4000");
+
+      function joinRoom() {
+          const chatRoomId = document.getElementById("chatRoomId").value;
+          const userId = document.getElementById("userId").value;
+          socket.emit("joinRoom", chatRoomId, userId);
+          alert(\`채팅방 \${chatRoomId}에 참여했습니다.\`);
+      }
+
+      function sendChat() {
+          const chatRoomId = document.getElementById("chatRoomId").value;
+          const userId = document.getElementById("userId").value;
+          const message = document.getElementById("message").value;
+          socket.emit("sendChat", chatRoomId, userId, message);
+      }
+
+      socket.on("newChat", (data) => {
+          const chatLog = document.getElementById("chatLog");
+          const messageElement = document.createElement("p");
+          messageElement.innerText = \`사용자 \${data.writerId}: \${data.messageContent} (보낸 시간: \${data.createdAt})\`;
+          chatLog.appendChild(messageElement);
+          chatLog.scrollTop = chatLog.scrollHeight;
+      });
+  </script>
+  `);
 });
 
 const authRouter = require('./router/auth');
@@ -32,20 +77,13 @@ app.use('/chatrooms', chatroomRouter);
 app.use('/find-mento', findMentoRouter);
 app.use('/profile', profileRouter);
 
-// HTTP 서버 생성 및 Socket.IO 설정
+// HTTP 서버와 Socket.IO 초기화
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: "*", // 모든 도메인 허용; 필요 시 수정
-        methods: ["GET", "POST"]
-    }
-});
+const io = socketIo(server);
 
-// Socket.IO 연결 및 이벤트 설정
 io.on("connection", (socket) => {
     console.log("새로운 클라이언트가 연결되었습니다");
 
-    // 1. 채팅방에 들어오면 -> 소켓 채팅방 참여하기
     socket.on("joinRoom", async (chatRoomId, userId) => {
         try {
             const chatRoom = await ChatRoom.findOne({ where: { id: chatRoomId } });
@@ -54,44 +92,37 @@ io.on("connection", (socket) => {
                 return;
             }
 
-            socket.join(`chatRoom_${chatRoomId}`); // 해당 방에 참여
+            socket.join(`chatRoom_${chatRoomId}`);
             console.log(`사용자 ${userId}가 채팅방 ${chatRoomId}에 참여했습니다.`);
-            
-            // 필요한 경우, 채팅방 참여자 목록 업데이트 등의 추가 로직을 여기에 넣을 수 있습니다.
         } catch (error) {
             console.error("채팅방 참여 중 오류:", error);
         }
     });
 
-    // 2. 채팅이 생기면 'sendChat' 이벤트 수신
     socket.on("sendChat", async (chatRoomId, userId, newChatMessage) => {
         try {
-            // 메시지를 DB에 저장
             const chatMessage = await ChatMessage.create({
                 idChatRoom: chatRoomId,
                 idUser: userId,
                 messageContent: newChatMessage,
-                isRead: false // 초기 메시지의 읽음 상태는 false로 설정
+                isRead: false
             });
 
-            // 3. 해당 채팅방에만 새로운 메시지 전송
             io.to(`chatRoom_${chatRoomId}`).emit("newChat", {
                 writerId: userId,
                 messageContent: newChatMessage,
                 createdAt: chatMessage.createdAt
             });
 
-            // 4. 멘토 정보와 읽지 않은 메시지 수 계산
-            const mento = await User.findOne({ where: { id: chatRoom.mentoId } });
+            const mento = await User.findOne({ where: { id: chatRoomId } }); // 채팅방 멘토 찾기
             const noReads = await ChatMessage.count({
                 where: {
                     idChatRoom: chatRoomId,
-                    idUser: { [Op.ne]: userId }, // 현재 사용자가 보낸 메시지는 제외
+                    idUser: { [Op.ne]: userId },
                     isRead: false
                 }
             });
 
-            // 5. 채팅방 목록에 표시될 마지막 메시지 전송
             io.emit("newChatRoomMessage", {
                 chatRoomId,
                 mentoNick: mento.nickName,
@@ -105,6 +136,7 @@ io.on("connection", (socket) => {
     });
 });
 
-app.listen(port, () => {
-	console.log(`Listening on port ${port}`);
+// 서버 시작 (Socket.IO와 함께 실행)
+server.listen(port, () => {
+    console.log(`서버가 ${port}번 포트에서 실행 중입니다.`);
 });
