@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require("cors");
 const http = require("http");
+const { Op } = require('sequelize');
 const socketIo = require("socket.io");
 
 const app = express();
@@ -36,9 +37,18 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 io.on("connection", (socket) => {
+    // 클라이언트에서 전달한 인증 토큰(accessToken) 받기
+    const token = socket.handshake.headers["authorization"];
+    console.log("💕접속한 클라이언트의 인증 토큰:", token);
+
+    if (!token) {
+        console.error("접근 권한이 없습니다. 인증 토큰이 필요합니다.");
+        socket.disconnect();  // 토큰이 없을 경우 연결 해제
+        return;
+    }
     console.log("새로운 클라이언트가 연결되었습니다");
 
-    socket.on("joinRoom", async (chatRoomId, userId) => {
+    socket.on("joinRoom", async ({ chatRoomId, userId }) => {
         try {
             const chatRoom = await ChatRoom.findOne({ where: { id: chatRoomId } });
             if (!chatRoom) {
@@ -53,7 +63,10 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("sendChat", async (chatRoomId, userId, newChatMessage) => {
+    socket.on("sendChat", async ({ chatRoomId, userId, newChatMessage }) => {
+      console.log("채팅방 ID:", chatRoomId);
+      console.log("사용자 ID:", userId);
+      console.log("메시지:", newChatMessage);
         try {
             const chatMessage = await ChatMessage.create({
                 idChatRoom: chatRoomId,
