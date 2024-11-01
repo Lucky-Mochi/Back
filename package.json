@@ -6,7 +6,8 @@
     "express": "^4.21.1",
     "mysql2": "^3.11.3",
     "sequelize": "^6.37.4",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "socket.io": "^4.8.1"
   },
   "name": "back2",
   "version": "1.0.0",
