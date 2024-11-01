@@ -28,7 +28,8 @@ router.get("/", async (req, res) => {
       subjectTag: user.subjectTag,
       etcTag: user.etcTag,
       myInfo: user.myInfo,
-      picture: user.profileImg // 구글 프로필 사진
+      picture: user.profileImg, // 구글 프로필 사진
+      temperature: user.temperature // 평가 온도
     };
 
     // 사용자 멘토링 목록 가져오기
