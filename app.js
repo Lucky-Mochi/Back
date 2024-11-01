@@ -96,12 +96,12 @@ io.on("connection", async (socket) => {
 
         console.log("채팅방 ID:", chatRoomId);
         console.log("사용자 ID:", userId);
-        console.log("메시지:", newChatMessage);
+        console.log("메시지:", newChatMessage.messageContent);
 
         const chatMessage = await ChatMessage.create({
           idChatRoom: chatRoomId,
           idUser: userId,
-          messageContent: newChatMessage,
+          messageContent: newChatMessage.messageContent,
           isRead: false
         });
 
