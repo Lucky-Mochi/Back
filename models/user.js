@@ -35,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     temperature: DataTypes.INTEGER,
     accessToken: DataTypes.TEXT,
     profileImg: DataTypes.STRING,
+    selfId: DataTypes.STRING,
+    password: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

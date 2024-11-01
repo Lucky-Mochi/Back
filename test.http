@@ -94,3 +94,38 @@ Content-Type: application/json
   "mentoId": 1,
   "temperature": 3
 }
+
+### 회원가입 API 테스트
+POST http://localhost:4000/auth/signup/self
+Content-Type: application/json
+
+{
+  "selfId": "testuser",
+  "password": "password123"
+}
+
+### 로그인 API 테스트
+POST http://localhost:4000/auth/login/self
+Content-Type: application/json
+
+{
+  "selfId": "testuser",
+  "password": "password123"
+}
+
+### 사용자 정보 업데이트 API 테스트
+# 아래에서 accessToken 값을 로그인 API 테스트 결과에서 얻은 실제 토큰으로 변경하세요.
+PUT http://localhost:4000/auth/signup/self/update
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+  "isMento": true,
+  "mentoType": "Culture",
+  "nickName": "TestMentor",
+  "age": 30,
+  "country": "Korea",
+  "myInfo": "Experienced mentor in Korean culture",
+  "subjectTag": ["Culture", "Language"],
+  "etcTag": ["Multicultural", "Education"]
+}

@@ -51,6 +51,12 @@ module.exports = {
       profileImg: {
         type: Sequelize.STRING
       },
+      selfId: {
+        type: Sequelize.STRING
+      },
+      password: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
