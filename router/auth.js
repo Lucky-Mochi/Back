@@ -8,7 +8,7 @@ const { User } = db;
 
 const GOOGLE_CLIENT_ID = '1039522151820-tpvlul7g4k31equ0becd2qj0t7mpa4nj.apps.googleusercontent.com';
 const GOOGLE_CLIENT_SECRET = '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';
-const GOOGLE_REDIRECT_URI = `http://${process.env.API_URL}/auth/login/redirect`;
+const GOOGLE_REDIRECT_URI = `${process.env.API_URL}/auth/login/redirect`;
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
 
