@@ -226,4 +226,45 @@ router.post("/read", async (req, res) => {
   }
 });
 
+router.post("/join", async (req, res) => {
+  try {
+    const token = req.headers["authorization"];
+    const tokenValue = token ? token.split(" ")[1] : null;
+
+    if (!tokenValue) {
+      return res.status(400).json({ success: false, message: "토큰이 제공되지 않았습니다." });
+    }
+
+    const user = await User.findOne({ where: { accessToken: tokenValue } });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "유효하지 않은 토큰입니다." });
+    }
+
+    const { mentoId } = req.body;
+
+    // 멘토 유효성 확인
+    const mento = await User.findOne({ where: { id: mentoId } });
+    if (!mento) {
+      return res.status(404).json({ success: false, message: "유효하지 않은 멘토 ID입니다." });
+    }
+
+    // 채팅방 생성
+    const chatRoom = await ChatRoom.create({
+      mentoId,
+      menteeId: user.id,
+      matchStatus: 'unapplied'
+    });
+
+    // 채팅방 ID 반환
+    return res.status(201).json({
+      success: true,
+      message: "채팅방이 생성되었습니다.",
+      chatRoomId: chatRoom.id
+    });
+  } catch (error) {
+    console.error("채팅방 생성 중 오류:", error);
+    res.status(500).json({ success: false, message: "서버 에러가 발생했습니다." });
+  }
+});
+
 module.exports = router;
