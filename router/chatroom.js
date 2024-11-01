@@ -268,4 +268,46 @@ router.post("/join", async (req, res) => {
   }
 });
 
+router.post("/apply-mentoring", async (req, res) => {
+  try {
+    const token = req.headers["authorization"];
+    const tokenValue = token ? token.split(" ")[1] : null;
+
+    if (!tokenValue) {
+      return res.status(400).json({ success: false, message: "토큰이 제공되지 않았습니다." });
+    }
+
+    const user = await User.findOne({ where: { accessToken: tokenValue } });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "유효하지 않은 토큰입니다." });
+    }
+
+    const { chatRoomId } = req.body;
+
+    // 채팅방 존재 여부 확인
+    const chatRoom = await ChatRoom.findOne({ where: { id: chatRoomId } });
+    if (!chatRoom) {
+      return res.status(404).json({ success: false, message: "존재하지 않는 채팅방입니다." });
+    }
+
+    // 현재 사용자가 멘토 또는 멘티로 참여하고 있는지 확인
+    if (chatRoom.mentoId !== user.id && chatRoom.menteeId !== user.id) {
+      return res.status(403).json({ success: false, message: "해당 채팅방에 접근할 권한이 없습니다." });
+    }
+
+    // 채팅방의 matchStatus를 'applied'로 업데이트
+    await chatRoom.update({ matchStatus: 'applied' });
+
+    // 응답 전송
+    return res.status(200).json({
+      success: true,
+      message: "멘토링이 신청되었습니다."
+    });
+  } catch (error) {
+    console.error("멘토링 신청 중 오류:", error);
+    res.status(500).json({ success: false, message: "서버 에러가 발생했습니다." });
+  }
+});
+
+
 module.exports = router;
