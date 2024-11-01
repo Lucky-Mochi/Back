@@ -17,53 +17,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send(`
-  <h1>채팅방 테스트</h1>
-  <div>
-      <label for="chatRoomId">채팅방 ID:</label>
-      <input type="text" id="chatRoomId" placeholder="채팅방 ID를 입력하세요" />
-  </div>
-  <div>
-      <label for="userId">사용자 ID:</label>
-      <input type="text" id="userId" placeholder="사용자 ID를 입력하세요" />
-  </div>
-  <button onclick="joinRoom()">채팅방 참여</button>
-
-  <div>
-      <label for="message">메시지:</label>
-      <input type="text" id="message" placeholder="메시지를 입력하세요" />
-      <button onclick="sendChat()">메시지 전송</button>
-  </div>
-
-  <div id="chatLog" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll;">
-      <h2>채팅 로그</h2>
-  </div>
-
-  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-  <script>
-      const socket = io("http://localhost:4000");
-
-      function joinRoom() {
-          const chatRoomId = document.getElementById("chatRoomId").value;
-          const userId = document.getElementById("userId").value;
-          socket.emit("joinRoom", chatRoomId, userId);
-          alert(\`채팅방 \${chatRoomId}에 참여했습니다.\`);
-      }
-
-      function sendChat() {
-          const chatRoomId = document.getElementById("chatRoomId").value;
-          const userId = document.getElementById("userId").value;
-          const message = document.getElementById("message").value;
-          socket.emit("sendChat", chatRoomId, userId, message);
-      }
-
-      socket.on("newChat", (data) => {
-          const chatLog = document.getElementById("chatLog");
-          const messageElement = document.createElement("p");
-          messageElement.innerText = \`사용자 \${data.writerId}: \${data.messageContent} (보낸 시간: \${data.createdAt})\`;
-          chatLog.appendChild(messageElement);
-          chatLog.scrollTop = chatLog.scrollHeight;
-      });
-  </script>
+    르키모찌하자나~~!!
   `);
 });
 
