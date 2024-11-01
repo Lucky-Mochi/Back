@@ -84,7 +84,15 @@ router.get("/my-mentorings", async (req, res) => {
         return res.status(404).json({ success: false, message: "유효하지 않은 토큰입니다." });
       } else {
         // 채팅방을 가져오고, 필요한 데이터 형태로 가공합니다.
-        const chatrooms = await ChatRoom.findAll({ where: { matchStatus: 'applied' } });
+        const chatrooms = await ChatRoom.findAll({ 
+          where: {
+              matchStatus: 'unapplied',
+              [Op.or]: [
+                  { mentoId: user.id },
+                  { menteeId: user.id }
+              ]
+          }
+        });
 
         // 각 채팅방에 대한 정보를 가져옵니다.
         const chatRooms = await Promise.all(chatrooms.map(async (chatroom) => {
