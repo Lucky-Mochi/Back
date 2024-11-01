@@ -21,7 +21,7 @@ const profileRouter = require('./router/profile');
 app.use('/auth', authRouter);
 app.use('/chatrooms', chatroomRouter);
 app.use('/find-mento', findMentoRouter);
-app.use('/profile', require('./router/profile'));
+app.use('/profile', profileRouter);
 
 
 app.listen(port, () => {
